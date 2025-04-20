@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moving Camouflaged Object Detection and Tracking</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+        
+        .video-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            padding-top: 50px;
+        }
+        
+        .video-wrapper {
+            flex: 1;
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        video {
+            width: 100%;
+            display: block;
+            background: #000; /* Ensures black background if video fails */
+        }
+        
+        @media (max-width: 768px) {
+            .video-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Moving Camouflaged Object Detection and Tracking</h1>
+        <div class="video-container">
+            <div class="video-wrapper">
+                <video id="video1" controls autoplay muted playsinline>
+                    <source src="flatfish_video.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            <div class="video-wrapper">
+                <video id="video2" controls autoplay muted playsinline>
+                    <source src="predicted_fish_3.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Fix for grey video issue
+        document.addEventListener('DOMContentLoaded', function() {
+            const video1 = document.getElementById('video1');
+            const video2 = document.getElementById('video2');
+
+            // Force videos to play (with error handling)
+            const playVideo = (video) => {
+                video.play().catch(e => {
+                    console.log("Autoplay blocked:", e);
+                    video.controls = true; // Show controls if autoplay fails
+                });
+            };
+
+            playVideo(video1);
+            playVideo(video2);
+
+            // Fallback: Reload videos if they stall
+            video1.addEventListener('error', () => {
+                console.log("Video 1 error - attempting reload");
+                video1.load();
+            });
+
+            video2.addEventListener('error', () => {
+                console.log("Video 2 error - attempting reload");
+                video2.load();
+            });
+        });
+    </script>
+</body>
+</html>
